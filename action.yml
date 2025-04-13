@@ -1,0 +1,15 @@
+name: 'AI Homework Judge Action'
+description: 'Online Judging for the AI homework "No. 6" of PKU software practice course.'
+author: pku-software
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - uses: xmake-io/github-action-setup-xmake@v1
+      with:
+        xmake-version: "2.7.7"
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.10"
+    - run: python ${{ github.action_path }}/src/main.py ${{ github.workspace }}
+      shell: bash

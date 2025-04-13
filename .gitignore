@@ -1,0 +1,13 @@
+# Python
+__pycache__
+
+# dotenv environment variables file
+.env
+.env.test
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
