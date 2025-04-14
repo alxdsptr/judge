@@ -16,37 +16,17 @@ class JudgeResult:
 
 def prepare(path: str) -> JudgeResult:
     dirname = os.path.dirname(os.path.abspath(__file__))
-    shutil.copytree(os.path.join(dirname, "../test"), path, dirs_exist_ok=True)
+    shutil.copytree(os.path.join(dirname, "..\\test"), path, dirs_exist_ok=True)
 
     return JudgeResult("prepare", True, "")
 
 def build(path: str) -> JudgeResult:
     os.chdir(path)
-    if os.path.exists("xmake.lua"):
-        build_system = 0
-    elif os.path.exists("CMakeLists.txt"):
-        build_system = 1
-    else:
-        return JudgeResult("pre-configure", False, "No build system found.")
 
-    config_commands = [
-        "xmake f -y" + (" -pmingw" if os.name == "nt" else ""),
-        "cmake -B ./build" + (" -G \"MinGW Makefiles\"" if os.name == "nt" else "")
-    ]
-    cfg_r = subprocess.run(
-        config_commands[build_system], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output = cfg_r.stdout.decode(errors="ignore") + \
-        cfg_r.stderr.decode(errors="ignore")
-    if cfg_r.returncode != 0:
-        return JudgeResult("configure", False, output)
-
-    build_commands = [
-        "xmake b -y",
-        "cmake --build ./build"
-    ]
+    build_command = "msbuild mini-lisp.sln /p:Configuration=Release /p:Platform=x64"
     build_r = subprocess.run(
-        build_commands[build_system], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output += build_r.stdout.decode(errors="ignore") + \
+        build_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    output = build_r.stdout.decode(errors="ignore") + \
         build_r.stderr.decode(errors="ignore")
     if build_r.returncode != 0:
         return JudgeResult("build", False, output)
@@ -109,7 +89,7 @@ def run_exe_it(path: str, args: List[str], input: str, output: str, cur_path: st
 def test(path: str, case: Case) -> JudgeResult:
     os.chdir(path)
     exe_path = os.path.join(
-        path, "bin", "mini_lisp.exe" if os.name == "nt" else "mini_lisp")
+        path, "bin", "x64", "Release", "mini_lisp.exe")
     cur_file_path = os.path.abspath(__file__)
     cur_path = os.path.dirname(cur_file_path)
     if not os.path.exists(exe_path):

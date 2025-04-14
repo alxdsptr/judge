@@ -24,5 +24,5 @@ class Case:
 
 def get_cases() -> List[Case]:
     return [
-        Case("../test/test1.in", "../test/test1.out"),
+        Case("..\\test\\test1.in", "..\\test\\test1.out"),
     ]

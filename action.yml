@@ -5,11 +5,10 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
-    - uses: xmake-io/github-action-setup-xmake@v1
-      with:
-        xmake-version: "2.7.7"
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
     - uses: actions/setup-python@v4
       with:
         python-version: "3.10"
-    - run: python ${{ github.action_path }}/src/main.py ${{ github.workspace }}
-      shell: bash
+    - run: python "${{ github.action_path }}\src\main.py"  "${{ github.workspace }}"
+      shell: PowerShell
