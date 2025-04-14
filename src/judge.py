@@ -88,8 +88,9 @@ def run_exe_it(path: str, args: List[str], input: str, output: str, cur_path: st
 
 def test(path: str, case: Case) -> JudgeResult:
     os.chdir(path)
+    exe_dir = os.path.join(path, "x64", "Release")
     exe_path = os.path.join(
-        path, "bin", "x64", "Release", "mini_lisp.exe")
+        path, "x64", "Release", "mini-lisp.exe")
     cur_file_path = os.path.abspath(__file__)
     cur_path = os.path.dirname(cur_file_path)
     if not os.path.exists(exe_path):
