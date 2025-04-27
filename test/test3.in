@@ -1,0 +1,16 @@
+(define (sort nums)
+    (if (or (null? nums) (null? (cdr nums)))
+        nums
+        (let ((fst (car nums)))
+          (let ((small (sort (filter (lambda (num) (<= num fst)) (cdr nums)))) (big (sort (filter (lambda (num) (> num fst)) (cdr nums)))))
+          (append
+           small
+           (list fst)
+           big
+           )
+         )
+        )
+    )
+)
+(print (sort '(12 71 2 15 29 82 87 8 18 66 81 25 63 97 40 3 93 58 53 31 47)))
+(exit 0)
